@@ -2,7 +2,8 @@
     "name": "netglue/cachewarm",
     "description": "Simply cli utility to warm up a website cache by crawling a sitemap file",
     "require": {
-        "symfony/console": "~2.6"
+        "symfony/console": "~2.6",
+        "zendframework/zend-http": "~2"
     },
     "license": "MIT",
     "authors": [

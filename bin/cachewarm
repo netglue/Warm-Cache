@@ -5,6 +5,9 @@ require __DIR__.'/../vendor/autoload.php';
 use Netglue\CacheWarmCommand;
 use Symfony\Component\Console\Application;
 
+$cmd = new CacheWarmCommand;
+
 $application = new Application('Cache-Warm', '@package_version@');
-$application->add(new CacheWarmCommand);
+$application->add($cmd);
+$application->setDefaultCommand($cmd->getName());
 $application->run();
