@@ -1,0 +1,20 @@
+{
+    "name": "netglue/cachewarm",
+    "description": "Simply cli utility to warm up a website cache by crawling a sitemap file",
+    "require": {
+        "symfony/console": "~2.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "George Steel",
+            "email": "george@net-glue.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload" : {
+		  "psr-0" : {
+			  "Netglue" : "src/"
+  		}
+  	}
+}
