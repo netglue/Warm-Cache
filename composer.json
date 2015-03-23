@@ -5,6 +5,9 @@
         "symfony/console": "~2.6",
         "zendframework/zend-http": "~2"
     },
+    "require-dev": {
+        "kherge/box": "~2.0"
+    },
     "license": "MIT",
     "authors": [
         {

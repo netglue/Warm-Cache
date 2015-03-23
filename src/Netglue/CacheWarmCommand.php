@@ -41,14 +41,21 @@ class CacheWarmCommand extends Command
         }
 
         $doc = new DOMDocument();
-        $doc->loadXml($body);
+        if(false === $doc->loadXml($body)) {
+            $output->writeln('<error>Failed to parse XML into a DOMDocument</error>');
+            return 1;
+        }
 
         $urls = $this->extractSitemapUrls($doc);
 
-        $this->output->writeln(sprintf('<info>Found %d URIs to warm up</info>', count($urls)));
+        if ($this->output->isVerbose()) {
+            $this->output->writeln(sprintf('<info>Found %d URIs to warm up</info>', count($urls)));
+        }
 
         foreach($urls as $uri) {
-            $this->output->writeln(sprintf('<info>Warming %s</info>', $uri));
+            if ($output->isVeryVerbose()) {
+                $this->output->writeln(sprintf('<info>Warming %s</info>', $uri));
+            }
             $client = $this->getHttpClient();
             $client->setUri($uri);
             $client->send();
@@ -56,12 +63,19 @@ class CacheWarmCommand extends Command
 
     }
 
+    /**
+     * Return an array of URLs to warm up from a single sitemap or sitemap index file
+     * @param DOMDocument $doc
+     * @return array
+     */
     private function extractSitemapUrls(DOMDocument $doc)
     {
         if($this->isIndex($doc)) {
             $sitemaps = $this->getSitemaps($doc);
 
-            $this->output->writeln(sprintf('<info>Found sitemap index with %d child sitemaps</info>', count($sitemaps)));
+            if ($this->output->isVerbose()) {
+                $this->output->writeln(sprintf('<info>Found sitemap index with %d child sitemaps</info>', count($sitemaps)));
+            }
 
             $urls = [];
 
@@ -82,6 +96,11 @@ class CacheWarmCommand extends Command
         return $urls;
     }
 
+    /**
+     * Whether the given document loks like a sitemap index file
+     * @param DOMDocument $doc
+     * @return bool
+     */
     private function isIndex(DOMDocument $doc)
     {
         $nodeList = $doc->getElementsByTagName('sitemapindex');
@@ -91,6 +110,11 @@ class CacheWarmCommand extends Command
         return true;
     }
 
+    /**
+     * Return Sitemap URLs from a Sitemap Index File
+     * @param DOMDocument $doc
+     * @return array
+     */
     private function getSitemaps(DOMDocument $doc)
     {
         $sitemaps = [];
